@@ -129,6 +129,61 @@
     }
     </style>
     <!-- untuk setting agar dropdown tidak terhalang scroll  -->
+
+    <!-- ChatBox -->
+    <style type="text/css">
+    .chat_box {
+      z-index: 9999;
+      position: fixed;
+      right: 20px;
+      bottom: 0px;
+      width: 300px;
+    }
+    .chat_head, .msg_head {
+      background: #222222;
+      color: white;
+      padding: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 5px 5px 0px 0px;
+    }
+    .searchBox {
+      padding: 0 !important;
+      margin: 0 !important;
+      height: 40px;
+      width: 100%;
+    }
+    .searchBox-inner {
+      height: 100%;
+      width: 100%;
+      padding: 0px !important;
+      background-color: #eee;
+    }
+    .chat_body {
+      background: whitesmoke;
+      height: 300px;
+    }
+    .member_list {
+      height: 300px;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+    .msg_box{
+      position:fixed;
+      bottom:-5px;
+      width:300px;
+      height:305px;
+      background:white;
+      border-radius:5px 5px 0px 0px;
+    }
+    .pull-left {
+      float: left!important;
+    }
+    .img-circle {
+      border-radius: 50%;
+    }
+    </style>
+    <!-- ChatBox -->
 </head>
 
 <body>
@@ -1101,7 +1156,111 @@
 
     </div>
 
+<!-- charbox -->
+<div class="chat_box">
+<div class="chat_head" style="background: #3c8dbc;">
+  <img src="{{asset('assets/icon/bell.png')}}" align="right" style="width:25px; height:25px; margin-bottom: -20px; margin-right: 8px;" border="0">
+  <span id="total_help" class="label label-default" style="border-radius: 50px; width: 10px; text-align: center; background-color: #ff0000; color: white; margin-left: 264px; margin-bottom: 5px;"></span>
+</div>
+<div class="searchBox" style="display: none;">
+  <div class="searchBox-inner" align="center" style="border-right: 1px solid #d0d0d0;border-left: 1px solid #d0d0d0;border-top: 1px solid #d0d0d0;">
+    <input type="text" id="myInput1" class="span3" style="margin-top: 6px;width: 90%;" onkeyup="myFunction1()" placeholder="Search Support...">
+  </div>
+</div>
+<div class="chat_body" style="display: none;">
+  <div class="member_list" style="background: white;border: 1px solid #d0d0d0;">
+    <!-- untuk menampilkan data helpdesk -->
+      <span id="tampil_helpdesk"></span>
+      <!-- untuk menampilkan data helpdesk -->
+      </div>
+    </div>
+  </div>
+<!-- chatbox -->
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- chatbox -->
+<script type="text/javascript">
+$.ajaxSetup({
+  headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  }
+});
+
+show_helpdesk();
+function show_helpdesk() {
+  $.ajax({
+  url: "{{ url('Helpdesk/helpdesk_in') }}",
+  method: 'GET',
+  dataType: 'JSON',
+  success: function(response) {
+    var hitung = response.data.length;
+    var elemenHTML = '<ul class="list-unstyled" id="style-5">';
+    for (var i = 0; i < hitung; i++) {
+      elemenHTML += '<li class="left clearfix" style="padding: 10px 10px; border-bottom: 1px solid #d0d0d0; position: relative;">';
+      elemenHTML += '<a href="' + response.data[i].url + '" target="_blank" style="display: block;">';
+      
+      elemenHTML += '<small style="color: #999999; font-size: 10px; position: absolute; top: 5px; right: 10px;">';
+      elemenHTML += '<i class="fa fa-clock-o"></i> ' + response.data[i].waktu + '</small>';
+
+      elemenHTML += '<div style="display: flex; align-items: center; margin-top: 15px;">';
+      elemenHTML += '<img src="' + response.data[i].image + '" class="img-circle" alt="User Image" style="width: 40px; height: 40px; margin-right: 10px;">';
+
+      elemenHTML += '<div>';
+      elemenHTML += '<h4 style="margin: 0; color: #444444; font-size: 15px;">' + response.data[i].name + '</h4>';
+      elemenHTML += '<p style="margin: 0; font-size: 12px; color: #888888;">' + response.data[i].helpdesk + '</p>';
+      elemenHTML += '</div>';
+
+      elemenHTML += '</div>'; 
+      elemenHTML += '</a>';
+      elemenHTML += '</li>';
+    }
+    elemenHTML += '</ul>';
+    $('#tampil_helpdesk').html(elemenHTML);
+    $('#total_help').text(hitung);
+  },
+  error: function(xhr, status, error) {
+    console.error("AJAX Error: ", error);
+  }
+});
+}
+
+function myFunction1() {
+  var input, filter, ul, li, a, i;
+  input = document.getElementById('myInput1');
+  filter = input.value.toUpperCase();
+  ul = document.getElementById("style-5");
+  li = ul.getElementsByTagName('li');
+  for (i = 0; i < li.length; i++) {
+    a = li[i].getElementsByTagName("a")[0];
+    if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+      li[i].style.display = "";
+    } else {
+      li[i].style.display = "none";
+    }
+  }
+}
+</script>
+<!-- chatbox -->
+
+<!-- chatbox -->
+<script type="text/javascript">
+$('.chat_head').click(function(){
+  $('.chat_body').slideToggle('slow');
+  $('.searchBox').slideToggle('slow');
+  $('.msg_box').hide('slow');
+});
+
+$('.msg_head').click(function(){
+  $('.msg_wrap').slideToggle('slow');
+});
+
+$('.msg_box').hide();
+$('.chat_body').hide();
+$('.searchBox').hide();
+</script>
+<!-- chatbox -->
+
 <script type="text/javascript">
 $.ajaxSetup({
   headers: {
@@ -1151,7 +1310,7 @@ function tampil_modul() {
                                     <a href="apps-user-profile.html" class="dropdown-item">Profile</a>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </li>
                 `;
