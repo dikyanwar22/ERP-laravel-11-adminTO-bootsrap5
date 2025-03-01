@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="csrf-token" content="{{csrf_token()}}">    
     <title>@yield('title', $title)</title>
 
     <!-- font awesome icon -->
@@ -426,99 +427,9 @@
         <!-- Horizontal Menu Start Dicky -->
         <header class="topnav">
             <nav class="navbar navbar-expand-lg">
-                <!-- custom menu -->
-                <nav class="page-container">
-                    <div class="collapse navbar-collapse custom-scroll-horizontal" id="topnav-menu-content">
-                        <ul class="navbar-nav">
-                            
-                            <li class="nav-item dropdown hover-dropdown">
-                                <a class="nav-link menu-item dropdown-toggle drop-arrow-none" href="#" role="button"
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="menu-icon"><i class="ti ti-apps fa-2x"></i></span>
-                                    <span class="menu-text">Apps</span>
-                                    <div class="menu-arrow"></div>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="topnav-apps">
-                                    <a href="apps-calendar.html" class="dropdown-item">Calendar</a>
-                                    <div class="dropdown hover-dropdown">
-                                        <a class="dropdown-item dropdown-toggle drop-arrow-none" href="#"
-                                            role="button" data-bs-toggle="dropdown" data-bs-display="static" aria-haspopup="true" aria-expanded="false">
-                                            User
-                                            <div class="menu-arrow"></div>
-                                        </a>
-                                        <div class="dropdown-menu custom-dropdown-submenu" aria-labelledby="topnav-user">
-                                            <a href="apps-user-contacts.html" class="dropdown-item">Contacts</a>
-                                            <a href="apps-user-profile.html" class="dropdown-item">Profile</a>
-                                        </div>
-                                    </div>
-                
-                                    <div class="dropdown hover-dropdown">
-                                        <a class="dropdown-item dropdown-toggle drop-arrow-none" href="#"
-                                            role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Tasks
-                                            <div class="menu-arrow"></div>
-                                        </a>
-                                        <div class="dropdown-menu custom-dropdown-submenu" aria-labelledby="topnav-tasks">
-                                            <a href="apps-kanban.html" class="dropdown-item">Kanban</a>
-                                            <a href="apps-task-details.html" class="dropdown-item">View Details</a>
-                                        </div>
-                                    </div>
-                
-                                    <div class="dropdown hover-dropdown">
-                                        <a class="dropdown-item dropdown-toggle drop-arrow-none" href="#"
-                                            role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            Invoice
-                                            <div class="menu-arrow"></div>
-                                        </a>
-                                        <div class="dropdown-menu custom-dropdown-submenu" aria-labelledby="topnav-invoices">
-                                            <a href="apps-invoices.html" class="dropdown-item">Invoices</a>
-                                            <a href="apps-invoice-details.html" class="dropdown-item">View Invoice</a>
-                                            <a href="apps-invoice-create.html" class="dropdown-item">Create Invoice</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-
-                            <li class="nav-item dropdown hover-dropdown">
-                                <a class="nav-link menu-item dropdown-toggle drop-arrow-none" href="#" role="button"
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="menu-icon"><i class="ti ti-apps fa-2x"></i></span>
-                                    <span class="menu-text">Module Name</span>
-                                    <div class="menu-arrow"></div>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="topnav-apps">
-                                    <a href="apps-calendar.html" class="dropdown-item">Calendar</a>
-                                    <a href="apps-calendar.html" class="dropdown-item">Calendar</a>
-                                    <a href="apps-calendar.html" class="dropdown-item">Calendar</a>
-                                    <a href="apps-calendar.html" class="dropdown-item">Calendar</a>
-                                    <a href="apps-calendar.html" class="dropdown-item">Calendar</a>
-                                    <a href="apps-calendar.html" class="dropdown-item">Calendar</a>
-                                    <div class="dropdown hover-dropdown">
-                                        <a class="dropdown-item dropdown-toggle drop-arrow-none" href="#"
-                                            role="button" data-bs-toggle="dropdown" data-bs-display="static" aria-haspopup="true" aria-expanded="false">
-                                            User
-                                            <div class="menu-arrow"></div>
-                                        </a>
-                                        <div class="dropdown-menu custom-dropdown-submenu" aria-labelledby="topnav-user">
-                                            <a href="apps-user-contacts.html" class="dropdown-item">Contacts</a>
-                                            <a href="apps-user-profile.html" class="dropdown-item">Profile</a>
-                                        </div>
-                                    </div>
-                
-                                </div>
-                            </li>
-
-                            <li class="nav-item dropdown hover-dropdown">
-                                <a class="nav-link menu-item" href="index.html">
-                                    <span class="menu-icon"><i class="fas fa-dashboard fa-2x"></i></span>
-                                    <span class="menu-text">Dashboard</span>
-                                </a>
-                            </li>
-
-                        </ul>
-                    </div>
-                </nav>
-                <!-- custom menu -->
+                <!-- Start Modul -->
+                <span id="tampil_modul"></span>
+                <!-- End Modul -->
             </nav>
         </header>
         <!-- Horizontal Menu End -->
@@ -1190,7 +1101,72 @@
 
     </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+$.ajaxSetup({
+  headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  }
+});
 
+tampil_modul();
+function tampil_modul() {
+    $.ajax({
+        url: "{{ url('tampil_modul') }}",
+        method: 'GET',
+        dataType: 'JSON',
+        success: function(response) {
+            var elemenHTML = `
+            <nav class="page-container">
+                <div class="collapse navbar-collapse custom-scroll-horizontal" id="topnav-menu-content">
+                    <ul class="navbar-nav">
+            `;
+
+            for (var i = 0; i < response.length; i++) {
+                var modul = response[i];
+                var page = window.location.pathname.split('/')[1];
+                var url_modul = modul.uri;
+                var isActive = page === url_modul;
+                var activeClass = isActive ? 'active' : '';
+
+                elemenHTML += `
+                    <li class="nav-item dropdown hover-dropdown ${activeClass}">
+                        <a class="nav-link menu-item dropdown-toggle drop-arrow-none" href="#" role="button"
+                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="menu-icon"><i class="${modul.icon}"></i></span>
+                            <span class="menu-text">${modul.modul}</span>
+                            <div class="menu-arrow"></div>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="topnav-apps">
+
+                            <a href="apps-calendar.html" class="dropdown-item">Calendar</a>
+                            <div class="dropdown hover-dropdown">
+                                <a class="dropdown-item dropdown-toggle drop-arrow-none" href="#"
+                                    role="button" data-bs-toggle="dropdown" data-bs-display="static" aria-haspopup="true" aria-expanded="false">
+                                    User
+                                    <div class="menu-arrow"></div>
+                                </a>
+                                <div class="dropdown-menu custom-dropdown-submenu" aria-labelledby="topnav-user">
+                                    <a href="apps-user-contacts.html" class="dropdown-item">Contacts</a>
+                                    <a href="apps-user-profile.html" class="dropdown-item">Profile</a>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </li>
+                `;
+            }
+
+            elemenHTML += `</ul>
+                </div>
+            </nav>`;
+
+            $('#tampil_modul').append(elemenHTML);
+        }
+    });
+}
+</script>
+    
     <!-- Vendor js -->
     <script src="{{asset('assets/AdminTO/assets/js/vendor.min.js')}}"></script>
 
