@@ -1156,12 +1156,13 @@
 
     </div>
 
-<!-- charbox -->
+<!-- chatbox -->
 <div class="chat_box">
-<div class="chat_head" style="background: #3c8dbc;">
-  <img src="{{asset('assets/icon/bell.png')}}" align="right" style="width:25px; height:25px; margin-bottom: -20px; margin-right: 8px;" border="0">
-  <span id="total_help" class="label label-default" style="border-radius: 50px; width: 10px; text-align: center; background-color: #ff0000; color: white; margin-left: 264px; margin-bottom: 5px;"></span>
+<div class="chat_head d-flex align-items-center justify-content-end" style="background: #3c8dbc; padding: 5px 10px; position: relative;">
+  <img src="{{asset('assets/icon/bell.png')}}" style="width:25px; height:25px; margin-right: 0px;">
+  <span id="total_help" class="badge bg-danger rounded-circle">0</span>
 </div>
+
 <div class="searchBox" style="display: none;">
   <div class="searchBox-inner" align="center" style="border-right: 1px solid #d0d0d0;border-left: 1px solid #d0d0d0;border-top: 1px solid #d0d0d0;">
     <input type="text" id="myInput1" class="span3" style="margin-top: 6px;width: 90%;" onkeyup="myFunction1()" placeholder="Search Support...">
@@ -1296,7 +1297,7 @@ function tampil_modul() {
                             <span class="menu-text">${modul.modul}</span>
                             <div class="menu-arrow"></div>
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="topnav-apps">
+                        <div class="dropdown-menu">
 
                             <a href="apps-calendar.html" class="dropdown-item">Calendar</a>
                             <div class="dropdown hover-dropdown">
@@ -1326,12 +1327,9 @@ function tampil_modul() {
 }
 </script>
     
-    <!-- Vendor js -->
-    <script src="{{asset('assets/AdminTO/assets/js/vendor.min.js')}}"></script>
-
-    <!-- App js -->
-    <script src="{{asset('assets/AdminTO/assets/js/app.js')}}"></script>
-
+<!-- Vendor js -->
+<script src="{{asset('assets/AdminTO/assets/js/vendor.min.js')}}"></script>
+<!-- App js -->
+<script src="{{asset('assets/AdminTO/assets/js/app.js')}}"></script>
 </body>
-
 </html>
