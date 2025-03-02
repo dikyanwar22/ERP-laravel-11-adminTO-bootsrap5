@@ -336,6 +336,62 @@ public function submenu_update($id, Request $request) : RedirectResponse {
 
 public function tampil_modul() {
     $level_akses = Auth::user()->level_id;
+
+    $menus = DB::table('menu')
+        ->leftJoin('sub_menu', 'menu.id', '=', 'sub_menu.menu_id')
+        ->leftJoin('modul', 'menu.modul_id', '=', 'modul.id')
+        ->select(
+            'modul.id as modul_id', 'modul.nama as modul_nama', 'modul.icon AS modul_icon',
+            'menu.id as menu_id', 'menu.nama as menu_nama', 'menu.icon AS menu_icon', 'menu.tipe',
+            'sub_menu.id as sub_menu_id', 'sub_menu.icon AS sub_menu_icon', 'sub_menu.nama as sub_menu_nama'
+        )
+        ->whereRaw('FIND_IN_SET(?, modul.level_id) > 0', [$level_akses])
+        ->orWhereRaw('FIND_IN_SET(?, menu.level_id) > 0', [$level_akses])
+        ->orWhereRaw('FIND_IN_SET(?, sub_menu.level_id) > 0', [$level_akses])
+        ->orderBy('modul.id', 'asc')
+        ->orderBy('menu.sequence', 'asc')
+        ->orderBy('sub_menu.sequence', 'asc')
+        ->get();
+
+    $data = [];
+
+    foreach ($menus as $menu) {
+        if (!isset($data[$menu->modul_id])) {
+            $data[$menu->modul_id] = [
+                'modul_id' => $menu->modul_id,
+                'modul' => $menu->modul_nama,
+                'modul_icon' => $menu->modul_icon,
+                'menus' => []
+            ];
+        }
+
+        if (!isset($data[$menu->modul_id]['menus'][$menu->menu_id])) {
+            $data[$menu->modul_id]['menus'][$menu->menu_id] = [
+                'menu_id' => $menu->menu_id,
+                'menu' => $menu->menu_nama,
+                'menu_icon' => $menu->menu_icon,
+                'tipe' => $menu->tipe,
+                'sub_menus' => []
+            ];
+        }
+
+        if ($menu->tipe === 'dropdown' && $menu->sub_menu_id) {
+            $data[$menu->modul_id]['menus'][$menu->menu_id]['sub_menus'][] = [
+                'sub_menu_id' => $menu->sub_menu_id,
+                'sub_menu' => $menu->sub_menu_nama,
+                'sub_menu_icon' => $menu->sub_menu_icon
+            ];
+        }
+    }
+
+    foreach ($data as &$modul) {
+        $modul['menus'] = array_values($modul['menus']);
+    }
+    return response()->json(array_values($data));
+}
+
+public function tampil_modul_old() {
+    $level_akses = Auth::user()->level_id;
     $db = DB::table('modul')
     ->select('id', 'nama AS modul', 'icon', 'uri')
     ->where('deleted', '0')

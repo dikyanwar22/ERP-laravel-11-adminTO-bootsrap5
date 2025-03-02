@@ -1269,13 +1269,6 @@ $('.searchBox').hide();
 <!-- chatbox -->
 
 <script type="text/javascript">
-$.ajaxSetup({
-  headers: {
-    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-  }
-});
-
-tampil_modul();
 function tampil_modul() {
     $.ajax({
         url: "{{ url('tampil_modul') }}",
@@ -1290,47 +1283,61 @@ function tampil_modul() {
 
             for (var i = 0; i < response.length; i++) {
                 var modul = response[i];
-                var page = window.location.pathname.split('/')[1];
-                var url_modul = modul.uri;
-                var isActive = page === url_modul;
-                var activeClass = isActive ? 'active' : '';
 
                 elemenHTML += `
-                    <li class="nav-item dropdown hover-dropdown ${activeClass}">
+                    <li class="nav-item dropdown hover-dropdown">
                         <a class="nav-link menu-item dropdown-toggle drop-arrow-none" href="#" role="button"
                             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="menu-icon"><i class="${modul.icon}"></i></span>
+                            <span class="menu-icon"><i class="${modul.modul_icon}"></i></span>
                             <span class="menu-text">${modul.modul}</span>
                             <div class="menu-arrow"></div>
                         </a>
                         <div class="dropdown-menu">
+                `;
 
-                            <a href="apps-calendar.html" class="dropdown-item">Calendar</a>
+                var menus = modul.menus;
+                for (var j = 0; j < menus.length; j++) {
+                    var menu = menus[j];
+
+                    if (menu.tipe === 'dropdown' && menu.sub_menus.length > 0) {
+                        elemenHTML += `
                             <div class="dropdown hover-dropdown">
                                 <a class="dropdown-item dropdown-toggle drop-arrow-none" href="#"
-                                    role="button" data-bs-toggle="dropdown" data-bs-display="static" aria-haspopup="true" aria-expanded="false">
-                                    User
+                                    role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="${menu.menu_icon}"></i> ${menu.menu}
                                     <div class="menu-arrow"></div>
                                 </a>
-                                <div class="dropdown-menu custom-dropdown-submenu" aria-labelledby="topnav-user">
-                                    <a href="apps-user-contacts.html" class="dropdown-item">Contacts</a>
-                                    <a href="apps-user-profile.html" class="dropdown-item">Profile</a>
-                                </div>
-                            </div>
+                                <div class="dropdown-menu custom-dropdown-submenu">
+                        `;
 
-                        </div>
-                    </li>
-                `;
+                        var sub_menus = menu.sub_menus;
+                        for (var k = 0; k < sub_menus.length; k++) {
+                            var sub_menu = sub_menus[k];
+
+                            elemenHTML += `
+                                <a href="#" class="dropdown-item"><i class="${sub_menu.sub_menu_icon}"></i> ${sub_menu.sub_menu}</a>
+                            `;
+                        }
+
+                        elemenHTML += `</div></div>`; // Tutup submenu dropdown
+                    } else {
+                        elemenHTML += `
+                            <a href="#" class="dropdown-item"><i class="${menu.menu_icon}"></i> ${menu.menu}</a>
+                        `;
+                    }
+                }
+
+                elemenHTML += `</div></li>`; // Tutup modul dan menu
             }
 
-            elemenHTML += `</ul>
-                </div>
-            </nav>`;
+            elemenHTML += `</ul></div></nav>`; // Tutup navbar
 
-            $('#tampil_modul').append(elemenHTML);
+            $('#tampil_modul').html(elemenHTML);
         }
     });
 }
+
+tampil_modul();
 </script>
     
 <!-- Vendor js -->
