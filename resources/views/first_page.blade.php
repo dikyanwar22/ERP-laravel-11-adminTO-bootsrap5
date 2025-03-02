@@ -56,6 +56,25 @@
             display: flex !important;
         }
     }
+
+    .dropdown-item.custom-dropdown {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        gap: 5px !important;
+        margin: 0 !important;
+        width: auto !important;
+        max-width: none !important;
+        min-width: 0 !important;
+        white-space: nowrap !important;
+    }
+
+    .dropdown-item.custom-dropdown i {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: auto !important;
+        min-width: 0 !important;
+    }
     </style>
 
     <!-- setting ukuran icon -->
@@ -1304,7 +1323,7 @@ function tampil_modul() {
                             <div class="dropdown hover-dropdown">
                                 <a class="dropdown-item dropdown-toggle drop-arrow-none" href="#"
                                     role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="${menu.menu_icon}"></i> ${menu.menu}
+                                    <i class="${menu.menu_icon}"></i>&ensp;${menu.menu}
                                     <div class="menu-arrow"></div>
                                 </a>
                                 <div class="dropdown-menu custom-dropdown-submenu">
@@ -1315,14 +1334,18 @@ function tampil_modul() {
                             var sub_menu = sub_menus[k];
 
                             elemenHTML += `
-                                <a href="#" class="dropdown-item"><i class="${sub_menu.sub_menu_icon}"></i> ${sub_menu.sub_menu}</a>
+                                <a href="#" class="dropdown-item custom-dropdown">
+                                    <i class="${sub_menu.sub_menu_icon}"></i> ${sub_menu.sub_menu}
+                                </a>
                             `;
                         }
 
                         elemenHTML += `</div></div>`; // Tutup submenu dropdown
                     } else {
                         elemenHTML += `
-                            <a href="#" class="dropdown-item"><i class="${menu.menu_icon}"></i> ${menu.menu}</a>
+                        <a href="#" class="dropdown-item custom-dropdown">
+                            <i class="${menu.menu_icon}"></i> ${menu.menu}
+                        </a>
                         `;
                     }
                 }
