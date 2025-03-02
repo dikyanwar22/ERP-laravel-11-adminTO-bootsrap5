@@ -55,6 +55,12 @@
         body {
             display: flex !important;
         }
+        
+        /* Memberi jarak pada modules di sisi kiri dan kanan */
+        .spacing-modules {  
+            margin-left: 30px !important;
+            margin-right: 30px !important;
+        }
     }
 
     .dropdown-item.custom-dropdown {
@@ -500,7 +506,7 @@
 
         <!-- Horizontal Menu Start Dicky -->
         <header class="topnav">
-            <nav class="navbar navbar-expand-lg">
+            <nav class="navbar navbar-expand-lg spacing-modules">
                 <!-- Start Modul -->
                 <span id="tampil_modul"></span>
                 <!-- End Modul -->
