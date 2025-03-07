@@ -1,0 +1,6 @@
+ls -la public/assets/AdminTO
+
+git rm --cached -r public/assets/AdminTO
+git add public/assets/AdminTO
+git commit -m "Menambahkan template adminto setelah menghapus embedded repository"
+git push origin main
