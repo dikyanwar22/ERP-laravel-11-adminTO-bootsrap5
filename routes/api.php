@@ -8,6 +8,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('register', \App\Http\Controllers\Api\Auth\RegisterController::class);
+
+//http://127.0.0.1:8000/api/login
 Route::post('login', \App\Http\Controllers\Api\Auth\LoginController::class);
 
 Route::apiResource('todos', \App\Http\Controllers\Api\TodoController::class)->middleware('auth:sanctum');
