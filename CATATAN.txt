@@ -18,3 +18,5 @@ untuk migration db
 BERIKUT UNTUK REFRESH PERUBAHAN PADA ROUTE:
 - php artisan route:cache
 - php artisan route:clear
+
+LARAVEL 11 SUPPORT DI PHP : PHP 8.2.12
