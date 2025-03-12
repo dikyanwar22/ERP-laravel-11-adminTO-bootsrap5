@@ -520,7 +520,7 @@
         <div class="page-content">
             <div class="page-container">
 
-                <div class="row">
+                <div class="row ms-1 me-1">
 
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb bg-light bg-opacity-50 p-1 mb-2">
@@ -530,7 +530,7 @@
                     </ol>
                 </nav>
 
-                    <div class="col-xxl-6">
+                    <div class="col-xxl-12">
                         <div class="card">
                             <div class="d-flex card-header justify-content-between align-items-center">
                                 <h4 class="header-title">Brands Listing</h4>
@@ -539,7 +539,7 @@
                         </div> <!-- end card-->
                     </div> <!-- end col-->
 
-                    <div class="col-xxl-6">
+                    <div class="col-xxl-12">
                         <div class="card card-h-100">
                             <div class="card-header d-flex flex-wrap align-items-center gap-2 border-bottom border-dashed">
                                 <h4 class="header-title me-auto">Top Selling Products</h4>
